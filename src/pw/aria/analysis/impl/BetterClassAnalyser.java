@@ -33,7 +33,7 @@ public class BetterClassAnalyser {
     @SuppressWarnings("unchecked")
     public void analyze() {
         // Main class desc
-        classDesc = new ClassDesc(cn.name, cn.signature, cn.superName,
+        classDesc = new ClassDesc(cn, cn.name, cn.signature, cn.superName,
                 (String[])cn.interfaces.toArray(new String[cn.innerClasses.size()]), cn.access, cn.version);
         // Method descs
         methods.addAll(((List<MethodNode>) cn.methods).stream().map(m -> new MethodDesc(m, cn, m.access, m.name, m.desc, m.signature,
@@ -42,7 +42,8 @@ public class BetterClassAnalyser {
         fields.addAll(((List<FieldNode>) cn.fields).stream().map(f -> new FieldDesc(f, f.access, f.name, f.desc, f.signature, f.value))
                 .collect(Collectors.toList()));
         // Annotation descs
-        try {
+        try { // Under some conditions (unknown as of yet), the map() call seems to cause NPEs.
+              // This is probably due to "a.values.toArray()", but is still to be ascertained.
             if (cn.visibleAnnotations != null) {
                 annotations.addAll(((List<AnnotationNode>) cn.visibleAnnotations).stream()
                         .map(a -> new AnnotationDesc(a.desc, true, a.values.toArray())).collect(Collectors.toList()));

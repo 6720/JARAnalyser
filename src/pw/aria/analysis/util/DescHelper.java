@@ -1,8 +1,7 @@
 package pw.aria.analysis.util;
 
 import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.AbstractInsnNode;
-import org.objectweb.asm.tree.LabelNode;
+import org.objectweb.asm.tree.*;
 import org.objectweb.asm.util.Printer;
 import org.objectweb.asm.util.Textifier;
 import org.objectweb.asm.util.TraceMethodVisitor;
@@ -13,6 +12,7 @@ import pw.aria.analysis.descs.MethodDesc;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Iterator;
+import java.util.List;
 
 import static org.objectweb.asm.Opcodes.*;
 
@@ -71,6 +71,10 @@ public class DescHelper {
 
     public static boolean isAnnotation(int mod) {
         return (mod & ACC_ANNOTATION) != 0;
+    }
+
+    public static boolean isDeprecated(int mod) {
+        return (mod & ACC_DEPRECATED) != 0;
     }
 
     public static boolean isVoid(String desc) {
@@ -148,6 +152,74 @@ public class DescHelper {
         return sw.toString();
     }
 
+    public static String[] methodNodeAnnotations(MethodNode node) {
+        return annotationListToStringArray(node.visibleAnnotations);
+    }
+
+    public static String[] fieldNodeAnnotations(FieldNode node) {
+        return annotationListToStringArray(node.visibleAnnotations);
+    }
+
+    public static String[] classNodeAnnotations(ClassNode node) {
+        return annotationListToStringArray(node.visibleAnnotations);
+    }
+
+    public static String[] annotationListToStringArray(List<AnnotationNode> annotationsList) {
+        String[] annotations;
+        if(annotationsList != null) {
+            if(annotationsList.size() > 0) {
+                annotations = new String[annotationsList.size()];
+                for(int i = 0; i < annotationsList.size(); i++) {
+                    AnnotationNode an = annotationsList.get(i);
+                    annotations[i] = "@" + an.desc.replaceFirst("L", "").replaceFirst(";", "").replaceAll("/", ".");
+                    if(an.values != null) {
+                        int counter = 0;
+                        annotations[i] += "(";
+                        for (Object o : an.values) {
+                            String oString = o.toString();
+                            if(o.getClass().isArray()) {
+                                boolean wasReallyAFieldReference = false;
+                                StringBuilder sb2 = new StringBuilder();
+                                sb2.append("{");
+                                for(int z = 0; z < ((Object[])o).length; z++) {
+                                    if(z == ((Object[])o).length - 1) {
+                                        sb2.append(((Object[])o)[z]);
+                                    } else {
+                                        String tempOString = ((Object[])o)[z].toString();
+                                        // We can probably safely assume that
+                                        // this is something like
+                                        // {Lcom/example/CustomEnum;, TESTENUMOPTION}
+                                        if(tempOString.startsWith("L") && tempOString.endsWith(";")) {
+                                            wasReallyAFieldReference = true;
+                                            sb2.append(tempOString.replaceFirst("L", "").replaceFirst(";", "")
+                                                    .replaceAll("/", ".").trim())
+                                                    .append(".").append(((Object[]) o)[++z]);
+                                        } else {
+                                            sb2.append(((Object[]) o)[z]).append(", ");
+                                        }
+                                    }
+                                }
+                                sb2.append("}");
+                                oString = sb2.toString().trim();
+                                if(wasReallyAFieldReference && an.values.size() == 2) {
+                                    oString = oString.replaceFirst("\\{", "").replaceFirst("\\}", "");
+                                }
+                            }
+                            annotations[i] += oString + (counter % 2 == 0 ? " = " : o.equals(an.values.get(an.values.size() - 1)) ? "" : ", ");
+                            ++counter;
+                        }
+                        annotations[i] += ")";
+                    }
+                }
+            } else {
+                annotations = new String[0];
+            }
+        } else {
+            annotations = new String[0];
+        }
+        return annotations;
+    }
+
     public static String classToString(ClassDesc c) {
         StringBuilder sb = new StringBuilder();
         String tempName = c.getClassName();
@@ -160,7 +232,20 @@ public class DescHelper {
             String pkg = tempName.replaceAll("/", ".").substring(0, tempName.length() - (className.length() + 1));
             sb.append("package ").append(pkg).append(";\n\n");
         }
-
+        if(isDeprecated(c.getAccessLevel())) {
+            sb.append("@Deprecated\n");
+        }
+        int counter = 0;
+        for(String e : c.getAnnotations()) {
+            if (counter > 0) {
+                sb.append("    ");
+            }
+            sb.append(e).append("\n");
+            ++counter;
+        }
+        if(c.getAnnotations().length > 0) {
+            sb.append("    ");
+        }
         if(isPublic(c.getAccessLevel())) {
             sb.append("public ");
         } else if(isProtected(c.getAccessLevel())) {
@@ -213,6 +298,20 @@ public class DescHelper {
 
     public static String fieldToString(FieldDesc f) {
         StringBuilder sb = new StringBuilder();
+        if(isDeprecated(f.getAccessLevel())) {
+            sb.append("@Deprecated\n");
+        }
+        int counter = 0;
+        for(String e : f.getAnnotations()) {
+            if (counter > 0) {
+                sb.append("    ");
+            }
+            sb.append(e).append("\n");
+            ++counter;
+        }
+        if(f.getAnnotations().length > 0) {
+            sb.append("    ");
+        }
         if(isPublic(f.getAccessLevel())) {
             sb.append("public ");
         } else if(isProtected(f.getAccessLevel())) {
@@ -281,6 +380,9 @@ public class DescHelper {
         if(m.getName().equals("<clinit>")) {
             sb.append("static");
         } else {
+            if(isDeprecated(m.getAccessLevel())) {
+                sb.append("@Deprecated\n");
+            }
             int counter = 0;
             for (String e : m.getAnnotations()) {
                 if (counter > 0) {
@@ -391,8 +493,6 @@ public class DescHelper {
         Iterator<AbstractInsnNode> i = m.getNode().instructions.iterator();
         while(i.hasNext()) {
             AbstractInsnNode insn = i.next();
-            /*sb.append("        // Type: ").append(insn.getType())
-                    .append(", opcode: ").append(insn.getOpcode()).append("\n");*/
             sb.append("        // ");
             if(insn instanceof LabelNode) {
                 sb.append(insnToString(insn).trim());
@@ -402,7 +502,6 @@ public class DescHelper {
             sb.append("\n");
         }
         sb.append("    }");
-
 
         return sb.toString();
     }

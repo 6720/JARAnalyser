@@ -142,8 +142,6 @@ public class MainFrame extends JFrame {
 
         jScrollPane2.setViewportView(jTextPane1);
 
-        //jTabbedPane1.addTab("tab1", jScrollPane2);
-
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -170,7 +168,7 @@ public class MainFrame extends JFrame {
     /**
      * http://stackoverflow.com/questions/11553112/how-to-add-close-button-to-a-jtabbedpane-tab
      * @param title Title of the given tab
-     * @return JPanel to replace things and stuff
+     * @return JTabbedPane to replace things and stuff in
      */
     private Component getClosePanel(String title, JTabbedPane pane) {
         JPanel pnlTab = new JPanel(new GridBagLayout());
@@ -210,9 +208,6 @@ public class MainFrame extends JFrame {
             int index = pane.indexOfTab(getTabName());
             if (index >= 0) {
                 pane.removeTabAt(index);
-                // It would probably be worthwhile getting the source
-                // casting it back to a JButton and removing
-                // the action handler reference ;)
             }
         }
     }
