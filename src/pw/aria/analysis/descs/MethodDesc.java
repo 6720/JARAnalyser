@@ -15,16 +15,56 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.JarEntry;
 
+/**
+ * Description of a method
+ */
 @Data
 public class MethodDesc {
+    /**
+     * Access modifier of the method
+     */
     private final int accessLevel;
+
+    /**
+     * Name of the method
+     */
     private final String name;
+
+    /**
+     * Type description of the method
+     */
     private final String description;
+
+    /**
+     * Signature of the method
+     */
     private final String signature;
+
+    /**
+     * Array of Strings representing the exceptions the method throws. May be
+     * empty
+     */
     private final String[] thrownExceptions;
+
+    /**
+     * Array of Strings representing the annotations on the method. May be
+     * empty
+     */
     private final String[] annotations;
+
+    /**
+     * {@link org.objectweb.asm.tree.MethodNode} for this method
+     */
     private final MethodNode node;
+
+    /**
+     * {@link org.objectweb.asm.tree.ClassNode} to which this method belongs
+     */
     private final ClassNode owner;
+
+    /**
+     * List of places where this method is invoked
+     */
     private final List<String> methodCallLocations = new ArrayList<>();
 
     public MethodDesc(MethodNode n, ClassNode owner, int a, String b, String c, String d, String[] e) {
@@ -38,6 +78,9 @@ public class MethodDesc {
         annotations = DescHelper.methodNodeAnnotations(node);
     }
 
+    /**
+     * Fills the invocation location list, if it has not already been done
+     */
     @SuppressWarnings("unchecked")
     public void updateCallLocations() {
         if(methodCallLocations.size() > 0) {

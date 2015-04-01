@@ -16,111 +16,286 @@ import java.util.List;
 
 import static org.objectweb.asm.Opcodes.*;
 
+/**
+ * Utility class to make dealing with the various classes in
+ * <tt>pw.aria.analysis.descs</tt> easier.
+ */
 @SuppressWarnings("unchecked")
 public class DescHelper {
+    /**
+     * Used for converting arbitrary {@link org.objectweb.asm.tree.AbstractInsnNode}s
+     * to String-form.
+     */
     private static final Printer printer = new Textifier();
+
+    /**
+     * Used for converting arbitrary {@link org.objectweb.asm.tree.AbstractInsnNode}s
+     * to String-form.
+     */
     private static final TraceMethodVisitor mp = new TraceMethodVisitor(printer);
 
+    /**
+     * Tells whether a given access modifier is public
+     *
+     * @param mod The access modifier to check
+     * @return True if the access modifier is public, false otherwise
+     */
     public static boolean isPublic(int mod) {
         return (mod & ACC_PUBLIC) != 0;
     }
 
+    /**
+     * Tells whether a given access modifier is protected
+     * @param mod The access modifier to check
+     * @return True if the access modifier is protected, false otherwise
+     */
     public static boolean isProtected(int mod) {
         return (mod & ACC_PROTECTED) != 0;
     }
 
+    /**
+     * Tells whether a given access modifier is private
+     *
+     * @param mod The access modifier to check
+     * @return True if the access modifier is private, false otherwise
+     */
     public static boolean isPrivate(int mod) {
         return (mod & ACC_PRIVATE) != 0;
     }
 
+    /**
+     * Tells whether a given access modifier is static
+     *
+     * @param mod The access modifier to check
+     * @return True if the access modifier is static, false otherwise
+     */
     public static boolean isStatic(int mod) {
         return (mod & ACC_STATIC) != 0;
     }
 
+    /**
+     * Tells whether a given access modifier is abstract
+     *
+     * @param mod The access modifier to check
+     * @return True if the access modifier is abstract, false otherwise
+     */
     public static boolean isAbstract(int mod) {
         return (mod & ACC_ABSTRACT) != 0;
     }
 
+    /**
+     * Tells whether a given access modifier is final
+     *
+     * @param mod The access modifier to check
+     * @return True if the access modifier is final, false otherwise
+     */
     public static boolean isFinal(int mod) {
         return (mod & ACC_FINAL) != 0;
     }
 
+    /**
+     * Tells whether a given access modifier is synthetic. A modifier is
+     * synthetic if it is marked with the ACC_SYNTHETIC flag (0x1000), as
+     * specified in JLS8, 4.6 <tt>Methods</tt>.
+     *
+     * @param mod The access modifier to check
+     * @return True if the access modifier is synthetic, false otherwise
+     */
     public static boolean isSynthetic(int mod) {
         return (mod & ACC_SYNTHETIC) != 0;
     }
 
+    /**
+     * Tells whether a given access modifier is volatile
+     *
+     * @param mod The access modifier to check
+     * @return True if the access modifier is volatile, false otherwise
+     */
     public static boolean isVolatile(int mod) {
         return (mod & ACC_VOLATILE) != 0;
     }
 
+    /**
+     * Tells whether a given access modifier is bridge. A modifier is bridge if
+     * it is marked with the ACC_BRIDGE flag (0x0040), as specified in
+     * JLS8, 4.6 <tt>Methods</tt>.
+     *
+     * @param mod The access modifier to check
+     * @return True if the access modifier is bridge, false otherwise
+     */
     public static boolean isBridge(int mod) {
         return (mod & ACC_BRIDGE) != 0;
     }
 
+    /**
+     * Tells whether a given access modifier is synchronized. A modifier is
+     * synchronized if it is marked with the ACC_SYNCHRONIZED flag (0x0020), as
+     * specified in JLS8, 4.6 <tt>Methods</tt> and
+     * JLS8, 2.11.10 <tt>Synchronization</tt>
+     *
+     * @param mod The access modifier to check
+     * @return True if the access modifier is synchronized, false otherwise
+     */
     public static boolean isSynchronized(int mod) {
         return (mod & ACC_SYNCHRONIZED) != 0;
     }
 
+    /**
+     * Tells whether a given access modifier is interface
+     *
+     * @param mod The access modifier to check
+     * @return True if the access modifier is interface, false otherwise
+     */
     public static boolean isInterface(int mod) {
         return (mod & ACC_INTERFACE) != 0;
     }
 
+    /**
+     * Tells whether a given access modifier is enum
+     *
+     * @param mod The access modifier to check
+     * @return True if the access modifier is enum, false otherwise
+     */
     public static boolean isEnum(int mod) {
         return (mod & ACC_ENUM) != 0;
     }
 
+    /**
+     * Tells whether a given access modifier is annotation (@interface)
+     *
+     * @param mod The access modifier to check
+     * @return True if the access modifier is annotation, false otherwise
+     */
     public static boolean isAnnotation(int mod) {
         return (mod & ACC_ANNOTATION) != 0;
     }
 
+    /**
+     * Tells whether a given access modifier is deprecated
+     *
+     * @param mod The access modifier to check
+     * @return True if the access modifier is deprecated, false otherwise
+     */
     public static boolean isDeprecated(int mod) {
         return (mod & ACC_DEPRECATED) != 0;
     }
 
+    /**
+     * Tells whether a given type is a void
+     *
+     * @param desc The type description to check
+     * @return True if the type is a void, false otherwise
+     */
     public static boolean isVoid(String desc) {
         return desc.endsWith("V");
     }
 
+    /**
+     * Tells whether a given type is a boolean
+     *
+     * @param desc The type description to check
+     * @return True if the type is a boolean, false otherwise
+     */
     public static boolean isBoolean(String desc) {
         return desc.endsWith("Z");
     }
 
+    /**
+     * Tells whether a given type is a char
+     *
+     * @param desc The type description to check
+     * @return True if the type is a char, false otherwise
+     */
     public static boolean isChar(String desc) {
         return desc.endsWith("C");
     }
 
+    /**
+     * Tells whether a given type is a byte
+     *
+     * @param desc The type description to check
+     * @return True if the type is a byte, false otherwise
+     */
     public static boolean isByte(String desc) {
         return desc.endsWith("B");
     }
 
+    /**
+     * Tells whether a given type is a short
+     *
+     * @param desc The type description to check
+     * @return True if the type is a short, false otherwise
+     */
     public static boolean isShort(String desc) {
         return desc.endsWith("S");
     }
 
+    /**
+     * Tells whether a given type is an int
+     *
+     * @param desc The type description to check
+     * @return True if the type is an int, false otherwise
+     */
     public static boolean isInt(String desc) {
         return desc.endsWith("I");
     }
 
+    /**
+     * Tells whether a given type is a float
+     *
+     * @param desc The type description to check
+     * @return True if the type is a float, false otherwise
+     */
     public static boolean isFloat(String desc) {
         return desc.endsWith("F");
     }
 
+    /**
+     * Tells whether a given type is a long
+     *
+     * @param desc The type description to check
+     * @return True if the type is a long, false otherwise
+     */
     public static boolean isLong(String desc) {
         return desc.endsWith("J");
     }
 
+    /**
+     * Tells whether a given type is a double
+     *
+     * @param desc The type description to check
+     * @return True if the type is a double, false otherwise
+     */
     public static boolean isDouble(String desc) {
         return desc.endsWith("D");
     }
 
+    /**
+     * Tells whether a given type is an array
+     *
+     * @param desc The type description to check
+     * @return True if the type is an array, false otherwise
+     */
     public static boolean isArray(String desc) {
         return desc.startsWith("[");
     }
 
+    /**
+     * Tells whether a given type is an Object
+     *
+     * @param desc The type description to check
+     * @return True if the type is an Object, false otherwise
+     */
     public static boolean isObject(String desc) {
         return desc.endsWith(";");
     }
 
+    /**
+     * Converts a Java major version number into a more human-readable String.
+     *
+     * @param java The Java major version number
+     * @return The human-readable version number
+     */
     public static String getVersion(int java) {
         switch(java) {
             case 45:
@@ -144,6 +319,12 @@ public class DescHelper {
         }
     }
 
+    /**
+     * Returns a String representation of a given JVM instruction
+     *
+     * @param insn The instruction to textualise
+     * @return The String representation of the given instruction
+     */
     public static String insnToString(AbstractInsnNode insn) {
         insn.accept(mp);
         StringWriter sw = new StringWriter();
@@ -152,19 +333,48 @@ public class DescHelper {
         return sw.toString();
     }
 
+    /**
+     * Creates a <tt>String[]</tt> out of the annotations on a given MethodNode
+     * Ex: {"@EventHandler", "@RuntimePriority(Priotity.HIGH)"}
+     *
+     * @param node The node to get annotations from
+     * @return An array of String representations of the node's annotations
+     */
     public static String[] methodNodeAnnotations(MethodNode node) {
         return annotationListToStringArray(node.visibleAnnotations);
     }
 
+    /**
+     * Creates a <tt>String[]</tt> out of the annotations on a given FieldNode
+     * Ex: {"@EventHandler", "@RuntimePriority(Priotity.HIGH)"}
+     *
+     * @param node The node to get annotations from
+     * @return An array of String representations of the node's annotations
+     */
     public static String[] fieldNodeAnnotations(FieldNode node) {
         return annotationListToStringArray(node.visibleAnnotations);
     }
 
+    /**
+     * Creates a <tt>String[]</tt> out of the annotations on a given ClassNode
+     * Ex: {"@EventHandler", "@RuntimePriority(Priotity.HIGH)"}
+     *
+     * @param node The node to get annotations from
+     * @return An array of String representations of the node's annotations
+     */
     public static String[] classNodeAnnotations(ClassNode node) {
         return annotationListToStringArray(node.visibleAnnotations);
     }
 
-    public static String[] annotationListToStringArray(List<AnnotationNode> annotationsList) {
+    /**
+     * Does the heavy lifting for {@link #methodNodeAnnotations},
+     * {@link #fieldNodeAnnotations}, and {@link #classNodeAnnotations}.
+     *
+     * @param annotationsList The list of {@link org.objectweb.asm.tree.AnnotationNode}s
+     *                        to turn into a String array.
+     * @return An array of String representations of the given annotations
+     */
+    private static String[] annotationListToStringArray(List<AnnotationNode> annotationsList) {
         String[] annotations;
         if(annotationsList != null) {
             if(annotationsList.size() > 0) {
@@ -220,6 +430,10 @@ public class DescHelper {
         return annotations;
     }
 
+    /**
+     * Creates a more "readable" form of the {@link pw.aria.analysis.descs.ClassDesc}
+     * given. Used in the "bytecode viewing" pane of the GUI.
+     */
     public static String classToString(ClassDesc c) {
         StringBuilder sb = new StringBuilder();
         String tempName = c.getClassName();
@@ -237,13 +451,16 @@ public class DescHelper {
         }
         int counter = 0;
         for(String e : c.getAnnotations()) {
+            if(e.contains("java.lang.Deprecated")) {
+                continue;
+            }
             if (counter > 0) {
                 sb.append("    ");
             }
             sb.append(e).append("\n");
             ++counter;
         }
-        if(c.getAnnotations().length > 0) {
+        if(counter > 0) {
             sb.append("    ");
         }
         if(isPublic(c.getAccessLevel())) {
@@ -296,6 +513,10 @@ public class DescHelper {
         return res;
     }
 
+    /**
+     * Creates a more "readable" form of the {@link pw.aria.analysis.descs.FieldDesc}
+     * given. Used in the "bytecode viewing" pane of the GUI.
+     */
     public static String fieldToString(FieldDesc f) {
         StringBuilder sb = new StringBuilder();
         if(isDeprecated(f.getAccessLevel())) {
@@ -375,6 +596,10 @@ public class DescHelper {
         return sb.toString();
     }
 
+    /**
+     * Creates a more "readable" form of the {@link pw.aria.analysis.descs.MethodDesc}
+     * given. Used in the "bytecode viewing" pane of the GUI.
+     */
     public static String methodToString(MethodDesc m) {
         StringBuilder sb = new StringBuilder();
         if(m.getName().equals("<clinit>")) {

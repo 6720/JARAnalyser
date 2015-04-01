@@ -12,16 +12,29 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+/**
+ * Utility class that extracts a JAR into a directory in the same directory
+ * that the application is being run from.
+ */
 @SuppressWarnings({"ResultOfMethodCallIgnored", "ConstantConditions", "unused"})
 public class JARExtractor {
+    /**
+     * The directory where extracted files will be stored
+     */
     private final File extractionDirectory;
+    /**
+     * The JAR file to be extracted
+     */
     private final File jarToExtract;
 
+    /**
+     * A {@link java.util.List} of the extracted classes
+     */
     private List<File> extractedFiles;
 
     public JARExtractor(String jarFile) {
         File f = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-        while(!f.isDirectory()) {
+        while(!f.isDirectory()) { // Makes sure that we can run from a JAR
             f = f.getParentFile();
         }
         final String $PATH = String.format("%s/extractionDir", f.getAbsolutePath());
@@ -31,6 +44,9 @@ public class JARExtractor {
         extractedFiles = new CopyOnWriteArrayList<>();
     }
 
+    /**
+     * Extracts the JAR file
+     */
     public void extract() {
         if(!extractionDirectory.exists()) {
             extractionDirectory.mkdir();
@@ -43,10 +59,26 @@ public class JARExtractor {
         // Collections.addAll(extractedFiles, extractionDirectory.listFiles());
     }
 
+    /**
+     * Extraction wrapper method.
+     *
+     * @param pathToJar Path to the JAR file to be extracted
+     * @param destDir Path to the extraction directory
+     * @throws IOException If the extraction fails
+     */
     private void extractJar(String pathToJar, String destDir) throws IOException {
         pickyExtract(pathToJar, destDir, "");
     }
 
+    /**
+     * Actually does the extraction
+     *
+     * @param pathToJar Path to the JAR file to be extracted
+     * @param destDir Path to the extraction directory
+     * @param ext File extension, anything without this extension will be
+     *            ignored
+     * @throws IOException
+     */
     private void pickyExtract(String pathToJar, String destDir, String ext) throws IOException {
         if(!destDir.endsWith(File.separator)) {
             destDir += File.separator;
@@ -86,10 +118,18 @@ public class JARExtractor {
         }
     }
 
+    /**
+     * Get the list of extracted files
+     * @return The list of extracted files
+     */
     public List<File> getExtractedFiles() {
         return extractedFiles;
     }
 
+    /**
+     * Get the directory that files were extracted to
+     * @return The directory that files were extracted to
+     */
     public File getExtractionDirectory() {
         return extractionDirectory;
     }

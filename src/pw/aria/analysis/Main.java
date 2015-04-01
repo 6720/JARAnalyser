@@ -3,10 +3,7 @@ package pw.aria.analysis;
 import lombok.Getter;
 import org.apache.commons.io.FileUtils;
 import org.objectweb.asm.ClassReader;
-import pw.aria.analysis.descs.FieldDesc;
-import pw.aria.analysis.descs.MethodDesc;
 import pw.aria.analysis.impl.BetterClassAnalyser;
-import pw.aria.analysis.ui.LoadingFrame;
 import pw.aria.analysis.ui.MainFrame;
 import pw.aria.analysis.util.JARExtractor;
 
@@ -22,6 +19,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class Main {
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     @Getter
     private static final Map<JarEntry, BetterClassAnalyser> analysers = new HashMap<>();
 
@@ -35,9 +33,6 @@ public class Main {
         final JarFile jarFile = new JarFile(chooser.getSelectedFile().getAbsolutePath());
         extractor = new JARExtractor(chooser.getSelectedFile().getAbsolutePath());
         extractor.extract();
-
-        //LoadingFrame loadingFrame = new LoadingFrame();
-        //EventQueue.invokeLater(() -> loadingFrame.setVisible(true));
 
         Enumeration<JarEntry> entries = jarFile.entries();
         while(entries.hasMoreElements()) {
@@ -57,16 +52,6 @@ public class Main {
                 }
             }
         }
-        /*System.out.println("Running method invocation analysis (this may take a while)");
-        for(Map.Entry<JarEntry, BetterClassAnalyser> entry : analysers.entrySet()) {
-            entry.getValue().getMethods().parallelStream().forEach(MethodDesc::updateCallLocations);
-        }
-        System.out.println("Running field access analysis (this may take a while)");
-        for(Map.Entry<JarEntry, BetterClassAnalyser> entry : analysers.entrySet()) {
-            entry.getValue().getFields().parallelStream().forEach(FieldDesc::updateAccessLocations);
-        }
-        System.out.println("Done!");
-        loadingFrame.setVisible(false);*/
         EventQueue.invokeLater(() -> new MainFrame().setVisible(true));
     }
 }

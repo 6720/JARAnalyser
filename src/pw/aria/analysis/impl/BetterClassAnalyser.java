@@ -13,15 +13,43 @@ import java.util.stream.Collectors;
 @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
 @Data
 public class BetterClassAnalyser {
+    /**
+     * {@link org.objectweb.asm.ClassReader} for the class being analysed
+     */
     private ClassReader cr;
+    /**
+     * {@link org.objectweb.asm.tree.ClassNode} for the class being analysed
+     */
     private ClassNode cn;
 
+    /**
+     * {@link pw.aria.analysis.descs.ClassDesc} of the class being analysed
+     */
     private ClassDesc classDesc;
+
+    /**
+     * {@link pw.aria.analysis.descs.MethodDesc}s for the class being analysed
+     */
     private final List<MethodDesc> methods = new ArrayList<>();
+
+    /**
+     * {@link pw.aria.analysis.descs.FieldDesc}s for the class being analysed
+     */
     private final List<FieldDesc> fields = new ArrayList<>();
+
+    /**
+     * {@link pw.aria.analysis.descs.AnnotationDesc}s for the class being analysed
+     */
     private final List<AnnotationDesc> annotations = new ArrayList<>();
+
+    /**
+     * {@link pw.aria.analysis.descs.TypeAnnotationDesc}s for the class being analysed
+     */
     private final List<TypeAnnotationDesc> typeAnnotations = new ArrayList<>();
-    //private final List<OuterClassDesc> outerClasses = new ArrayList<>();
+
+    /**
+     * {@link pw.aria.analysis.descs.InnerClassDesc}s for the class being analysed
+     */
     private final List<InnerClassDesc> innerClasses = new ArrayList<>();
 
     public BetterClassAnalyser(ClassReader c) {
@@ -30,6 +58,9 @@ public class BetterClassAnalyser {
         cr.accept(cn, 0);
     }
 
+    /**
+     * Does the actual analysis of the class
+     */
     @SuppressWarnings("unchecked")
     public void analyze() {
         // Main class desc
@@ -49,6 +80,7 @@ public class BetterClassAnalyser {
                         .map(a -> new AnnotationDesc(a.desc, true, a.values.toArray())).collect(Collectors.toList()));
             }
         } catch(Exception e) {
+            System.err.println("Error processing " + cn.name + ":");
             e.printStackTrace();
         }
         try {
@@ -57,6 +89,7 @@ public class BetterClassAnalyser {
                         .map(a -> new AnnotationDesc(a.desc, true, a.values.toArray())).collect(Collectors.toList()));
             }
         } catch(Exception e) {
+            System.err.println("Error processing " + cn.name + ":");
             e.printStackTrace();
         }
         // Type annotation descs
@@ -66,6 +99,7 @@ public class BetterClassAnalyser {
                         .map(t -> new TypeAnnotationDesc(t.typeRef, t.typePath, t.desc, true, t.values.toArray())).collect(Collectors.toList()));
             }
         } catch(Exception e) {
+            System.err.println("Error processing " + cn.name + ":");
             e.printStackTrace();
         }
         try {
@@ -74,6 +108,7 @@ public class BetterClassAnalyser {
                         .map(t -> new TypeAnnotationDesc(t.typeRef, t.typePath, t.desc, true, t.values.toArray())).collect(Collectors.toList()));
             }
         } catch(Exception e) {
+            System.err.println("Error processing " + cn.name + ":");
             e.printStackTrace();
         }
         // Inner classes
@@ -104,6 +139,11 @@ public class BetterClassAnalyser {
         return sb.toString();
     }
 
+    /**
+     * Condenses the information gathered in the analysis into a somewhat
+     * succinct analysis report
+     * @return The information gathered from the analysis
+     */
     public String getFieldAnalysis() {
         StringBuilder sb = new StringBuilder();
         String[] e = classDesc.getClassName().split("/");
@@ -123,6 +163,11 @@ public class BetterClassAnalyser {
         return sb.toString();
     }
 
+    /**
+     * Condenses the information gathered in the analysis into a somewhat
+     * succinct analysis report
+     * @return The information gathered from the analysis
+     */
     public String getMethodAnalysis() {
         StringBuilder sb = new StringBuilder();
         String[] e = classDesc.getClassName().split("/");
@@ -142,6 +187,10 @@ public class BetterClassAnalyser {
         return sb.toString();
     }
 
+    /**
+     * Returns interesting statistics about the analysed class
+     * @return Interesting statistics about the analysed class
+     */
     public String getStatistics() {
         StringBuilder sb = new StringBuilder();
         String[] e = classDesc.getClassName().split("/");

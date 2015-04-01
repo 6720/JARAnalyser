@@ -14,15 +14,52 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.JarEntry;
 
+/**
+ * Description of a field
+ */
 @Data
 public class FieldDesc {
+    /**
+     * Access modifier for the field
+     */
     private final int accessLevel;
+
+    /**
+     * Name of the field
+     */
     private final String name;
+
+    /**
+     * Type description of the field
+     */
     private final String description;
+
+    /**
+     * Signature of the field
+     *
+     * TODO: Can this be used to get information about generics?
+     */
     private final String signature;
+
+    /**
+     * Default value of the field. May be null
+     */
     private final Object value;
+
+    /**
+     * {@link org.objectweb.asm.tree.FieldNode} for this field
+     */
     private final FieldNode node;
+
+    /**
+     * Array of String representations of all annotations on this field. May be
+     * empty
+     */
     private final String[] annotations;
+
+    /**
+     * List of places where this field has been accessed
+     */
     private final List<String> fieldAccessLocations = new ArrayList<>();
 
     public FieldDesc(FieldNode n, int a, String b, String c, String d, Object e) {
@@ -35,6 +72,9 @@ public class FieldDesc {
         annotations = DescHelper.fieldNodeAnnotations(node);
     }
 
+    /**
+     * Fills the access location list, if it has not already been done
+     */
     @SuppressWarnings({"unchecked", "ConstantConditions"})
     public void updateAccessLocations() {
         if(fieldAccessLocations.size() > 0) {
