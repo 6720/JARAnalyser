@@ -4,7 +4,7 @@ import lombok.Getter;
 import org.apache.commons.io.FileUtils;
 import org.objectweb.asm.ClassReader;
 import pw.aria.analysis.impl.BetterClassAnalyser;
-import pw.aria.analysis.ui.MainFrame;
+import pw.aria.analysis.ui.BetterMainFrame;
 import pw.aria.analysis.util.JARExtractor;
 
 import javax.swing.*;
@@ -52,6 +52,6 @@ public class Main {
                 }
             }
         }
-        EventQueue.invokeLater(() -> new MainFrame().setVisible(true));
+        EventQueue.invokeLater(() -> new BetterMainFrame().setVisible(true));
     }
 }

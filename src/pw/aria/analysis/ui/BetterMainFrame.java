@@ -19,16 +19,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @SuppressWarnings("FieldCanBeLocal")
-@Deprecated
-public class MainFrame extends JFrame {
-
+public class BetterMainFrame extends JFrame {
+    private JButton jButton1;
     private JScrollPane jScrollPane1;
     private JScrollPane jScrollPane2;
     private JTabbedPane jTabbedPane1;
     private JTextPane jTextPane1;
+    private JToolBar jToolBar1;
     private JTree jTree1;
 
-    public MainFrame() {
+    private SearchFrame searchFrame;
+
+    public BetterMainFrame() {
         super("JAR Analyser");
         initialise();
         setLocationRelativeTo(null);
@@ -44,7 +46,7 @@ public class MainFrame extends JFrame {
                 }
             }
         } catch (ClassNotFoundException | UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BetterMainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         addWindowListener(new WindowAdapter() {
             @Override
@@ -58,16 +60,21 @@ public class MainFrame extends JFrame {
         });
     }
 
+    @SuppressWarnings("unchecked")
     private void initComponents() {
+        searchFrame = new SearchFrame();
         jScrollPane1 = new JScrollPane();
         jTree1 = new JTree();
         jTabbedPane1 = new JTabbedPane();
         jScrollPane2 = new JScrollPane();
         jTextPane1 = new JTextPane();
+        jToolBar1 = new JToolBar();
+        jButton1 = new JButton();
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         jScrollPane1.setViewportView(jTree1);
+
         jTree1.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
         jTree1.setModel(new FileSystemModel());
@@ -118,6 +125,7 @@ public class MainFrame extends JFrame {
                                     JavaSyntaxHighlighterHelper.applyRegex(JavaSyntaxHighlighterHelper.KEYWORD_REGEX, pane, Color.BLUE);
                                     JavaSyntaxHighlighterHelper.applyRegex("\\/\\/(.*)", pane, new Color(0x80, 0x80, 0x80));
                                     JavaSyntaxHighlighterHelper.applyRegex("(?s)/\\*.*?\\*/", pane, new Color(0x80, 0x80, 0x80));
+                                    JavaSyntaxHighlighterHelper.applyRegex("\"(.*)\"", pane, new Color(0x0, 0x80, 0x0));
 
                                     jTabbedPane1.addTab(file.getName(), pane2);
                                     for (int i = 0; i < jTabbedPane1.getTabCount(); i++) {
@@ -143,6 +151,27 @@ public class MainFrame extends JFrame {
 
         jScrollPane2.setViewportView(jTextPane1);
 
+        jToolBar1.setFloatable(false);
+        jToolBar1.setRollover(true);
+
+        jButton1.setText("Search");
+        jButton1.setFocusable(false);
+        jButton1.setHorizontalTextPosition(SwingConstants.CENTER);
+        jButton1.setVerticalTextPosition(SwingConstants.BOTTOM);
+
+        jButton1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                if(mouseEvent.getButton() == MouseEvent.BUTTON1) {
+                    if(!searchFrame.isVisible()) {
+                        searchFrame.setVisible(true);
+                    }
+                }
+            }
+        });
+
+        jToolBar1.add(jButton1);
+
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -152,14 +181,16 @@ public class MainFrame extends JFrame {
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jTabbedPane1, GroupLayout.DEFAULT_SIZE, 432, Short.MAX_VALUE)
                                 .addContainerGap())
+                        .addComponent(jToolBar1, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
+                        .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jToolBar1, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addComponent(jTabbedPane1)
-                                        .addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE))
+                                        .addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
+                                        .addComponent(jTabbedPane1))
                                 .addContainerGap())
         );
 
@@ -213,4 +244,3 @@ public class MainFrame extends JFrame {
         }
     }
 }
-

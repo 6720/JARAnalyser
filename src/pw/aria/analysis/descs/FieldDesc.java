@@ -2,6 +2,7 @@ package pw.aria.analysis.descs;
 
 import lombok.Data;
 import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.FieldNode;
 import pw.aria.analysis.Main;
@@ -62,7 +63,12 @@ public class FieldDesc {
      */
     private final List<String> fieldAccessLocations = new ArrayList<>();
 
-    public FieldDesc(FieldNode n, int a, String b, String c, String d, Object e) {
+    /**
+     * {@link org.objectweb.asm.tree.ClassNode} to which this method belongs
+     */
+    private final ClassNode owner;
+
+    public FieldDesc(FieldNode n, ClassNode owner, int a, String b, String c, String d, Object e) {
         accessLevel = a;
         name = b;
         description = c;
@@ -70,6 +76,7 @@ public class FieldDesc {
         value = e;
         node = n;
         annotations = DescHelper.fieldNodeAnnotations(node);
+        this.owner = owner;
     }
 
     /**

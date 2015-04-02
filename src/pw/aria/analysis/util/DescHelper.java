@@ -580,7 +580,15 @@ public class DescHelper {
             } else if(isInt(f.getDescription())) {
                 sb.append(f.getValue()).append("; // 0x").append(Integer.toHexString((Integer) f.getValue()));
             } else {
-                sb.append(f.getValue()).append(";");
+                if(isObject(f.getDescription())) {
+                    if(f.getDescription().contains("java/lang/String")) {
+                        if(!isArray(f.getDescription())) {
+                            sb.append('"').append(f.getValue()).append('"');
+                        }
+                    } else {
+                        sb.append(f.getValue()).append(";");
+                    }
+                }
             }
         } else {
             if(isBoolean(f.getDescription())) {

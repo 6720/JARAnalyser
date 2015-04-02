@@ -70,7 +70,7 @@ public class BetterClassAnalyser {
         methods.addAll(((List<MethodNode>) cn.methods).stream().map(m -> new MethodDesc(m, cn, m.access, m.name, m.desc, m.signature,
                 (String[]) m.exceptions.toArray(new String[m.exceptions.size()]))).collect(Collectors.toList()));
         // Field descs
-        fields.addAll(((List<FieldNode>) cn.fields).stream().map(f -> new FieldDesc(f, f.access, f.name, f.desc, f.signature, f.value))
+        fields.addAll(((List<FieldNode>) cn.fields).stream().map(f -> new FieldDesc(f, cn, f.access, f.name, f.desc, f.signature, f.value))
                 .collect(Collectors.toList()));
         // Annotation descs
         try { // Under some conditions (unknown as of yet), the map() call seems to cause NPEs.
