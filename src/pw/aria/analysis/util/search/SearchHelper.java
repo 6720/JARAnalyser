@@ -85,7 +85,7 @@ public class SearchHelper {
 
     private static List<String> getMatchingFields(String query, BetterClassAnalyser analyser) {
         List<String> results = new ArrayList<>();
-        results.addAll(analyser.getFields().stream().filter(f -> f.getName().toLowerCase().contains("accesses " + query))
+        results.addAll(analyser.getFields().stream().filter(f -> f.getName().toLowerCase().contains(query))
                 .map(f -> f.getOwner().name + "#" + f.getName()).collect(Collectors.toList()));
         return results;
     }
@@ -102,7 +102,7 @@ public class SearchHelper {
     private static List<String> getMatchingFieldAccesses(String query, BetterClassAnalyser analyser) {
         List<String> results = new ArrayList<>();
         for(FieldDesc e : analyser.getFields()) {
-            results.addAll(e.getFieldAccessLocations().stream().filter(f -> f.toLowerCase().contains(query)).collect(Collectors.toList()));
+            results.addAll(e.getFieldAccessLocations().stream().filter(f -> f.toLowerCase().contains("accesses " + query)).collect(Collectors.toList()));
         }
         return results;
     }
