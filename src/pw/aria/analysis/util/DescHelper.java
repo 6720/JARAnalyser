@@ -8,6 +8,8 @@ import org.objectweb.asm.util.TraceMethodVisitor;
 import pw.aria.analysis.descs.ClassDesc;
 import pw.aria.analysis.descs.FieldDesc;
 import pw.aria.analysis.descs.MethodDesc;
+import sun.reflect.generics.parser.SignatureParser;
+import sun.reflect.generics.tree.ClassSignature;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -291,6 +293,30 @@ public class DescHelper {
     }
 
     /**
+     * Tells whether the given method signature is generic. The method
+     * is considered generic if its signature ends with something along the
+     * lines of ")TV;"
+     *
+     * @param desc The method signature to check
+     * @return True if the method signature is generic, false otherwise
+     */
+    public static boolean isMethodReturnTypeGeneric(String desc) {
+        return desc.contains(")T");
+    }
+
+    /**
+     * Tells whether the given field description+signature is generic.
+     *
+     * @param desc Description of the field
+     * @param signature Signature of the field
+     * @return True if the field is generic, false otherwise
+     */
+    public static boolean isFieldGeneric(String desc, String signature) {
+        return signature.startsWith("T") && signature.endsWith(";") && Character.isUpperCase(signature.charAt(1))
+                && desc.contains("java/lang/Object");
+    }
+
+    /**
      * Converts a Java major version number into a more human-readable String.
      *
      * @param java The Java major version number
@@ -489,6 +515,22 @@ public class DescHelper {
         }
 
         sb.append(className);
+
+        if(c.getClassSignature() != null) {
+            if(!c.getClassSignature().isEmpty()) {
+                ClassSignature sig = SignatureParser.make().parseClassSig(c.getClassSignature());
+                sb.append("<");
+                for(int i = 0; i < sig.getFormalTypeParameters().length; i++) {
+                    if(i != sig.getFormalTypeParameters().length - 1) {
+                        sb.append(sig.getFormalTypeParameters()[i].getName()).append(", ");
+                    } else {
+                        sb.append(sig.getFormalTypeParameters()[i].getName());
+                    }
+                }
+                sb.append(">");
+            }
+        }
+
         if(c.getSuperClassName() != null && !c.getSuperClassName().isEmpty() && !c.getSuperClassName().equals("java/lang/Object")) {
             sb.append(" extends ").append(c.getSuperClassName().replaceAll("/", "."));
         }
@@ -565,8 +607,12 @@ public class DescHelper {
         } else if(isDouble(f.getDescription())) {
             sb.append("double");
         } else if(isObject(f.getDescription())) {
-            sb.append(f.getDescription().replaceFirst("\\((.*)\\)", "").replaceFirst("L", "").replaceFirst(";", "")
-                    .replaceAll("/", ".").replaceFirst("\\[", "").trim());
+            if(isFieldGeneric(f.getDescription(), f.getSignature())) {
+                sb.append(f.getSignature().replaceFirst("T", "").replaceFirst(";", ""));
+            } else {
+                sb.append(f.getDescription().replaceFirst("\\((.*)\\)", "").replaceFirst("L", "").replaceFirst(";", "")
+                        .replaceAll("/", ".").replaceFirst("\\[", "").trim());
+            }
         } else {
             sb.append("unknown");
         }
@@ -674,9 +720,19 @@ public class DescHelper {
                 } else if (isDouble(m.getDescription())) {
                     sb.append("double");
                 } else if (isObject(m.getDescription())) {
-                    tempDesc = m.getDescription().replaceFirst("\\((.*)\\)L", "").replaceFirst(";", "").replaceAll("/", ".")
-                            .replaceAll("\\((.*)\\)", "").trim();
-                    sb.append(tempDesc.replaceFirst("\\[L", ""));
+                    if(m.getSignature() != null) {
+                        if(!m.getSignature().isEmpty()) {
+                            if (isMethodReturnTypeGeneric(m.getSignature())) {
+                                String[] temp = m.getSignature().split("\\)");
+                                String generic = temp[temp.length - 1].replaceFirst("T", "").replaceFirst(";", "");
+                                sb.append(generic);
+                            }
+                        }
+                    } else {
+                        tempDesc = m.getDescription().replaceFirst("\\((.*)\\)L", "").replaceFirst(";", "").replaceAll("/", ".")
+                                .replaceAll("\\((.*)\\)", "").trim();
+                        sb.append(tempDesc.replaceFirst("\\[L", ""));
+                    }
                 } else {
                     sb.append("unknown");
                 }

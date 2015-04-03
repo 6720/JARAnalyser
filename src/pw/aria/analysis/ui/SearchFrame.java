@@ -1,18 +1,14 @@
 package pw.aria.analysis.ui;
 
-import pw.aria.analysis.Main;
-import pw.aria.analysis.impl.BetterClassAnalyser;
 import pw.aria.analysis.util.search.SearchHelper;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.jar.JarEntry;
-import java.util.stream.Collectors;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class SearchFrame extends JFrame {
@@ -27,6 +23,17 @@ public class SearchFrame extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    private void doSearch() {
+        List<String> results = SearchHelper.getSearchResults(jTextField1.getText().toLowerCase());
+        StringBuilder sb = new StringBuilder();
+        sb.append("Results:\n")
+                .append("========\n\n");
+        for(String e : results) {
+            sb.append(e).append("\n");
+        }
+        jTextPane1.setText(sb.toString().trim());
+    }
+
     @SuppressWarnings("unchecked")
     private void initComponents() {
 
@@ -39,32 +46,21 @@ public class SearchFrame extends JFrame {
 
         jTextField1.setToolTipText("Search query. Case-insensitive");
 
+        jTextField1.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent keyEvent) {
+                if(keyEvent.getKeyCode() == KeyEvent.VK_ENTER) {
+                    doSearch();
+                }
+            }
+        });
+
         jButton1.setText("Search");
 
         jButton1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                /*List<String> results = new ArrayList<>();
-                String query = jTextField1.getText().toLowerCase();
-                for(Map.Entry<JarEntry, BetterClassAnalyser> e : Main.getAnalysers().entrySet()) {
-                    // We only care about the things in the analysers, not the entries
-                    BetterClassAnalyser a = e.getValue();
-                    if(a.getClassDesc().getClassName().toLowerCase().contains(query)) {
-                        results.add(a.getClassDesc().getClassName());
-                    }
-                    results.addAll(a.getMethods().stream().filter(m -> m.getName().toLowerCase().contains(query))
-                            .map(m -> m.getOwner().name + "#" + m.getName()).collect(Collectors.toList()));
-                    results.addAll(a.getFields().stream().filter(f -> f.getName().toLowerCase().contains(query))
-                            .map(f -> f.getOwner().name + "#" + f.getName()).collect(Collectors.toList()));
-                }*/
-                List<String> results = SearchHelper.getSearchResults(jTextField1.getText().toLowerCase());
-                StringBuilder sb = new StringBuilder();
-                sb.append("Results:\n")
-                  .append("========\n\n");
-                for(String e : results) {
-                    sb.append(e).append("\n");
-                }
-                jTextPane1.setText(sb.toString().trim());
+                doSearch();
             }
         });
 

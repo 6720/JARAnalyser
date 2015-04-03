@@ -2,8 +2,6 @@ package pw.aria.analysis.ui;
 
 import org.apache.commons.io.FileUtils;
 import pw.aria.analysis.Main;
-import pw.aria.analysis.descs.FieldDesc;
-import pw.aria.analysis.descs.MethodDesc;
 import pw.aria.analysis.impl.BetterClassAnalyser;
 
 import javax.swing.*;

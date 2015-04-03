@@ -32,7 +32,9 @@ public class Main {
     public static void main(String[] args) throws IOException {
         JFileChooser chooser = new JFileChooser();
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        chooser.showOpenDialog(null);
+        while(chooser.getSelectedFile() == null) {
+            chooser.showOpenDialog(null);
+        }
         final JarFile jarFile = new JarFile(chooser.getSelectedFile().getAbsolutePath());
         extractor = new JARExtractor(chooser.getSelectedFile().getAbsolutePath());
         extractor.extract();

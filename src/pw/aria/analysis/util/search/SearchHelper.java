@@ -93,7 +93,7 @@ public class SearchHelper {
     private static List<String> getMatchingMethodInvocations(String query, BetterClassAnalyser analyser) {
         List<String> results = new ArrayList<>();
         for(MethodDesc e : analyser.getMethods()) {
-            results.addAll(e.getMethodCallLocations().stream().filter(f -> f.toLowerCase().contains("invokes " + query))
+            results.addAll(e.getMethodCallLocations().stream().filter(f -> f.toLowerCase().endsWith("invokes " + query))
                     .collect(Collectors.toList()));
         }
         return results;
@@ -102,7 +102,7 @@ public class SearchHelper {
     private static List<String> getMatchingFieldAccesses(String query, BetterClassAnalyser analyser) {
         List<String> results = new ArrayList<>();
         for(FieldDesc e : analyser.getFields()) {
-            results.addAll(e.getFieldAccessLocations().stream().filter(f -> f.toLowerCase().contains("accesses " + query)).collect(Collectors.toList()));
+            results.addAll(e.getFieldAccessLocations().stream().filter(f -> f.toLowerCase().endsWith("accesses " + query)).collect(Collectors.toList()));
         }
         return results;
     }
