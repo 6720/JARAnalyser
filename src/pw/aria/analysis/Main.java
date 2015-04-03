@@ -3,8 +3,11 @@ package pw.aria.analysis;
 import lombok.Getter;
 import org.apache.commons.io.FileUtils;
 import org.objectweb.asm.ClassReader;
+import pw.aria.analysis.descs.FieldDesc;
+import pw.aria.analysis.descs.MethodDesc;
 import pw.aria.analysis.impl.BetterClassAnalyser;
 import pw.aria.analysis.ui.BetterMainFrame;
+import pw.aria.analysis.ui.LoadingFrame;
 import pw.aria.analysis.util.JARExtractor;
 
 import javax.swing.*;
@@ -34,6 +37,8 @@ public class Main {
         extractor = new JARExtractor(chooser.getSelectedFile().getAbsolutePath());
         extractor.extract();
 
+        LoadingFrame loadingFrame = new LoadingFrame();
+        EventQueue.invokeLater(() -> loadingFrame.setVisible(true));
         Enumeration<JarEntry> entries = jarFile.entries();
         while(entries.hasMoreElements()) {
             JarEntry entry = entries.nextElement();
@@ -44,6 +49,8 @@ public class Main {
                     BetterClassAnalyser an = new BetterClassAnalyser(cr);
                     analysers.put(entry, an);
                     an.analyze();
+                    an.getFields().forEach(FieldDesc::updateAccessLocations);
+                    an.getMethods().forEach(MethodDesc::updateCallLocations);
                     stream.close();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -51,6 +58,11 @@ public class Main {
                     System.exit(1);
                 }
             }
+        }
+
+        loadingFrame.setVisible(false);
+        if(loadingFrame.isVisible()) { // ;_;
+            loadingFrame.setVisible(false);
         }
         EventQueue.invokeLater(() -> new BetterMainFrame().setVisible(true));
     }

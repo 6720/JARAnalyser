@@ -106,14 +106,6 @@ public class BetterMainFrame extends JFrame {
                                     }
                                 }
                                 if (!tabExists) {
-                                    LoadingFrame loadingFrame = new LoadingFrame();
-                                    loadingFrame.setVisible(true);
-                                    n.get().getValue().getFields().forEach(FieldDesc::updateAccessLocations);
-                                    n.get().getValue().getMethods().forEach(MethodDesc::updateCallLocations);
-                                    loadingFrame.setVisible(false);
-                                    if(loadingFrame.isVisible()) { // ;_;
-                                        loadingFrame.setVisible(false);
-                                    }
                                     JTextPane pane = new JTextPane();
                                     pane.setEditable(false);
                                     pane.setFont(Font.getFont("Monospaced"));
