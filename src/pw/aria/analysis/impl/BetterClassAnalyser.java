@@ -118,7 +118,7 @@ public class BetterClassAnalyser {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+        /*StringBuilder sb = new StringBuilder();
         // Main class information
         sb.append(DescHelper.classToString(classDesc)).append(" {\n");
         // Field information
@@ -136,7 +136,8 @@ public class BetterClassAnalyser {
         }
         sb.append("}\n");
 
-        return sb.toString();
+        return sb.toString();*/
+        return DescHelper.betterClassAnalyserToString(this);
     }
 
     /**

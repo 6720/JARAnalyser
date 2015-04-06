@@ -8,6 +8,7 @@ import org.objectweb.asm.util.TraceMethodVisitor;
 import pw.aria.analysis.descs.ClassDesc;
 import pw.aria.analysis.descs.FieldDesc;
 import pw.aria.analysis.descs.MethodDesc;
+import pw.aria.analysis.impl.BetterClassAnalyser;
 import sun.reflect.generics.parser.SignatureParser;
 import sun.reflect.generics.tree.ClassSignature;
 
@@ -312,7 +313,12 @@ public class DescHelper {
      * @return True if the field is generic, false otherwise
      */
     public static boolean isFieldGeneric(String desc, String signature) {
-        return signature.startsWith("T") && signature.endsWith(";") && Character.isUpperCase(signature.charAt(1))
+        return
+                signature != null
+                && desc != null
+                && signature.startsWith("T")
+                && signature.endsWith(";")
+                && Character.isUpperCase(signature.charAt(1))
                 && desc.contains("java/lang/Object");
     }
 
@@ -793,5 +799,30 @@ public class DescHelper {
         sb.append("    }");
 
         return sb.toString();
+    }
+
+    public static String betterClassAnalyserToString(BetterClassAnalyser analyser) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(classToString(analyser.getClassDesc())).append(" {\n");
+        if(analyser.getFields().size() > 0) {
+            for(FieldDesc f : analyser.getFields()) {
+                sb.append("    ").append(fieldToString(f)).append("\n");
+            }
+            if(analyser.getMethods().size() > 0) {
+                sb.append("\n");
+            }
+        }
+        if(analyser.getMethods().size() > 0) {
+            int i = 0;
+            for(MethodDesc m : analyser.getMethods()) {
+                sb.append("    ").append(methodToString(m)).append("\n");
+                if(i != analyser.getMethods().size() - 1) {
+                    sb.append("\n");
+                }
+                ++i;
+            }
+        }
+        sb.append("}\n");
+        return sb.toString().trim();
     }
 }
