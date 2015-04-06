@@ -29,7 +29,7 @@ public class EvenBetterMainFrame extends JFrame {
     private SearchFrame searchFrame;
 
     public EvenBetterMainFrame() {
-        //initComponents();
+        super("JAR Analyser");
         initialise();
         setLocationRelativeTo(null);
     }
@@ -112,10 +112,16 @@ public class EvenBetterMainFrame extends JFrame {
                                     JScrollPane pane2 = new JScrollPane();
                                     pane2.setViewportView(pane);
 
+                                    // Java keyword highlighting
                                     JavaSyntaxHighlighterHelper.applyRegex(JavaSyntaxHighlighterHelper.KEYWORD_REGEX, pane, Color.BLUE);
+                                    // Comment highlighting
                                     JavaSyntaxHighlighterHelper.applyRegex("\\/\\/(.*)", pane, new Color(0x80, 0x80, 0x80));
+                                    // Multiline comment highlighting
                                     JavaSyntaxHighlighterHelper.applyRegex("(?s)/\\*.*?\\*/", pane, new Color(0x80, 0x80, 0x80));
+                                    // Naive String highlighting
                                     JavaSyntaxHighlighterHelper.applyRegex("\"(.*)\"", pane, new Color(0x0, 0x80, 0x0));
+                                    // @interface highlighting
+                                    JavaSyntaxHighlighterHelper.applyRegex("@interface", pane, new Color(0x83, 0xBA, 0xFF));
 
                                     jTabbedPane1.addTab(file.getName(), pane2);
                                     for (int i = 0; i < jTabbedPane1.getTabCount(); i++) {

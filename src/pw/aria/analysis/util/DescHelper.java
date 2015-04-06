@@ -481,19 +481,11 @@ public class DescHelper {
         if(isDeprecated(c.getAccessLevel())) {
             sb.append("@Deprecated\n");
         }
-        int counter = 0;
         for(String e : c.getAnnotations()) {
             if(e.contains("java.lang.Deprecated")) {
                 continue;
             }
-            if (counter > 0) {
-                sb.append("    ");
-            }
             sb.append(e).append("\n");
-            ++counter;
-        }
-        if(counter > 0) {
-            sb.append("    ");
         }
         if(isPublic(c.getAccessLevel())) {
             sb.append("public ");
@@ -522,18 +514,20 @@ public class DescHelper {
 
         sb.append(className);
 
-        if(c.getClassSignature() != null) {
-            if(!c.getClassSignature().isEmpty()) {
-                ClassSignature sig = SignatureParser.make().parseClassSig(c.getClassSignature());
-                sb.append("<");
-                for(int i = 0; i < sig.getFormalTypeParameters().length; i++) {
-                    if(i != sig.getFormalTypeParameters().length - 1) {
-                        sb.append(sig.getFormalTypeParameters()[i].getName()).append(", ");
-                    } else {
-                        sb.append(sig.getFormalTypeParameters()[i].getName());
+        if(!isEnum(c.getAccessLevel()) && !isAnnotation(c.getAccessLevel())) {
+            if (c.getClassSignature() != null) {
+                if (!c.getClassSignature().isEmpty()) {
+                    ClassSignature sig = SignatureParser.make().parseClassSig(c.getClassSignature());
+                    sb.append("<");
+                    for (int i = 0; i < sig.getFormalTypeParameters().length; i++) {
+                        if (i != sig.getFormalTypeParameters().length - 1) {
+                            sb.append(sig.getFormalTypeParameters()[i].getName()).append(", ");
+                        } else {
+                            sb.append(sig.getFormalTypeParameters()[i].getName());
+                        }
                     }
+                    sb.append(">");
                 }
-                sb.append(">");
             }
         }
 
