@@ -6,7 +6,7 @@ import org.objectweb.asm.ClassReader;
 import pw.aria.analysis.descs.FieldDesc;
 import pw.aria.analysis.descs.MethodDesc;
 import pw.aria.analysis.impl.BetterClassAnalyser;
-import pw.aria.analysis.ui.BetterMainFrame;
+import pw.aria.analysis.ui.EvenBetterMainFrame;
 import pw.aria.analysis.ui.LoadingFrame;
 import pw.aria.analysis.util.JARExtractor;
 
@@ -66,6 +66,6 @@ public class Main {
         if(loadingFrame.isVisible()) { // ;_;
             loadingFrame.setVisible(false);
         }
-        EventQueue.invokeLater(() -> new BetterMainFrame().setVisible(true));
+        EventQueue.invokeLater(() -> new EvenBetterMainFrame().setVisible(true));
     }
 }

@@ -16,21 +16,20 @@ import java.util.jar.JarEntry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@Deprecated
-@SuppressWarnings({"FieldCanBeLocal", "deprecation", "unused"})
-public class BetterMainFrame extends JFrame {
+@SuppressWarnings("FieldCanBeLocal")
+public class EvenBetterMainFrame extends JFrame {
     private JButton jButton1;
-    private JScrollPane jScrollPane1;
-    private JScrollPane jScrollPane2;
+    private JScrollPane jScrollPane4;
+    private JScrollPane jScrollPane6;
+    private JSplitPane jSplitPane3;
     private JTabbedPane jTabbedPane1;
-    private JTextPane jTextPane1;
+    private JTextArea jTextArea2;
     private JToolBar jToolBar1;
     private JTree jTree1;
-
     private SearchFrame searchFrame;
 
-    public BetterMainFrame() {
-        super("JAR Analyser");
+    public EvenBetterMainFrame() {
+        //initComponents();
         initialise();
         setLocationRelativeTo(null);
     }
@@ -45,7 +44,7 @@ public class BetterMainFrame extends JFrame {
                 }
             }
         } catch (ClassNotFoundException | UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException ex) {
-            Logger.getLogger(BetterMainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EvenBetterMainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         addWindowListener(new WindowAdapter() {
             @Override
@@ -62,18 +61,18 @@ public class BetterMainFrame extends JFrame {
     @SuppressWarnings("unchecked")
     private void initComponents() {
         searchFrame = new SearchFrame();
-        jScrollPane1 = new JScrollPane();
-        jTree1 = new JTree();
-        jTabbedPane1 = new JTabbedPane();
-        jScrollPane2 = new JScrollPane();
-        jTextPane1 = new JTextPane();
         jToolBar1 = new JToolBar();
         jButton1 = new JButton();
+        jSplitPane3 = new JSplitPane();
+        jTabbedPane1 = new JTabbedPane();
+        jScrollPane6 = new JScrollPane();
+        jTextArea2 = new JTextArea();
+        jScrollPane4 = new JScrollPane();
+        jTree1 = new JTree();
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        jScrollPane1.setViewportView(jTree1);
-
+        jScrollPane4.setViewportView(jTree1);
         jTree1.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
         jTree1.setModel(new FileSystemModel());
@@ -140,8 +139,6 @@ public class BetterMainFrame extends JFrame {
             }
         });
 
-        jScrollPane2.setViewportView(jTextPane1);
-
         jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
 
@@ -163,26 +160,29 @@ public class BetterMainFrame extends JFrame {
 
         jToolBar1.add(jButton1);
 
+        jTextArea2.setColumns(20);
+        jTextArea2.setRows(5);
+        jScrollPane6.setViewportView(jTextArea2);
+
+        jSplitPane3.setRightComponent(jTabbedPane1);
+
+        jScrollPane4.setViewportView(jTree1);
+
+        jSplitPane3.setLeftComponent(jScrollPane4);
+
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTabbedPane1, GroupLayout.DEFAULT_SIZE, 432, Short.MAX_VALUE)
-                                .addContainerGap())
-                        .addComponent(jToolBar1, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jToolBar1, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
+                        .addComponent(jSplitPane3)
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jToolBar1, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
-                                        .addComponent(jTabbedPane1))
-                                .addContainerGap())
+                                .addComponent(jSplitPane3, GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE))
         );
 
         setBounds(0, 0, 610, 430);
