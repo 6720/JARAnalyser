@@ -1,6 +1,6 @@
-package pw.aria.analysis.ui;
+package mr.curlpipesh.analysis.ui;
 
-import pw.aria.analysis.impl.BetterClassAnalyser;
+import mr.curlpipesh.analysis.impl.BetterClassAnalyser;
 
 import javax.swing.*;
 import java.util.Map;

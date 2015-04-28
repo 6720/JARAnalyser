@@ -1,4 +1,4 @@
-package pw.aria.analysis.ui;
+package mr.curlpipesh.analysis.ui;
 
 import javax.swing.*;
 import javax.swing.text.AttributeSet;

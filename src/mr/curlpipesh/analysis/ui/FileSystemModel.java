@@ -1,6 +1,6 @@
-package pw.aria.analysis.ui;
+package mr.curlpipesh.analysis.ui;
 
-import pw.aria.analysis.Main;
+import mr.curlpipesh.analysis.Main;
 
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;

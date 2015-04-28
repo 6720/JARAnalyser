@@ -1,6 +1,6 @@
-package pw.aria.analysis.ui;
+package mr.curlpipesh.analysis.ui;
 
-import pw.aria.analysis.util.search.SearchHelper;
+import mr.curlpipesh.analysis.util.search.SearchHelper;
 
 import javax.swing.*;
 import java.awt.*;

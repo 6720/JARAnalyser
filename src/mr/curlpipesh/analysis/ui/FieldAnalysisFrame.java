@@ -1,17 +1,17 @@
-package pw.aria.analysis.ui;
+package mr.curlpipesh.analysis.ui;
 
-import pw.aria.analysis.impl.BetterClassAnalyser;
+import mr.curlpipesh.analysis.impl.BetterClassAnalyser;
 
 import javax.swing.*;
 import java.awt.*;
 
 @SuppressWarnings("FieldCanBeLocal")
-public class MethodAnalysisFrame extends JFrame {
+public class FieldAnalysisFrame extends JFrame {
     private JScrollPane jScrollPane3;
     private JTextPane jTextPane2;
 
-    public MethodAnalysisFrame(BetterClassAnalyser analyser) {
-        super("Method invocation analysis for " + analyser.getClassDesc().getClassName().replaceAll("/", ".") + ".class");
+    public FieldAnalysisFrame(BetterClassAnalyser analyser) {
+        super("Field access analysis for " + analyser.getClassDesc().getClassName().replaceAll("/", ".") + ".class");
         initComponents(analyser);
         setLocationRelativeTo(null);
     }
@@ -20,7 +20,7 @@ public class MethodAnalysisFrame extends JFrame {
     private void initComponents(BetterClassAnalyser analyser) {
         jScrollPane3 = new JScrollPane();
         jTextPane2 = new JTextPane();
-        jTextPane2.setText(analyser.getMethodAnalysis());
+        jTextPane2.setText(analyser.getFieldAnalysis());
         jTextPane2.setEditable(false);
         jTextPane2.setFont(Font.getFont("Monospaced"));
 

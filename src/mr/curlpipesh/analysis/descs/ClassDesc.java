@@ -1,8 +1,8 @@
-package pw.aria.analysis.descs;
+package mr.curlpipesh.analysis.descs;
 
 import lombok.Data;
+import mr.curlpipesh.analysis.util.DescHelper;
 import org.objectweb.asm.tree.ClassNode;
-import pw.aria.analysis.util.DescHelper;
 
 /**
  * Description of a class

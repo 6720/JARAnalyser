@@ -1,4 +1,4 @@
-package pw.aria.analysis.descs;
+package mr.curlpipesh.analysis.descs;
 
 import lombok.Data;
 import org.objectweb.asm.TypePath;

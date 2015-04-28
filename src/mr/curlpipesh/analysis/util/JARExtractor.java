@@ -1,6 +1,6 @@
-package pw.aria.analysis.util;
+package mr.curlpipesh.analysis.util;
 
-import pw.aria.analysis.Main;
+import mr.curlpipesh.analysis.Main;
 
 import java.io.File;
 import java.io.FileOutputStream;

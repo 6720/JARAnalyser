@@ -1,13 +1,13 @@
-package pw.aria.analysis.descs;
+package mr.curlpipesh.analysis.descs;
 
 import lombok.Data;
+import mr.curlpipesh.analysis.Main;
+import mr.curlpipesh.analysis.impl.BetterClassAnalyser;
+import mr.curlpipesh.analysis.util.DescHelper;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
-import pw.aria.analysis.Main;
-import pw.aria.analysis.impl.BetterClassAnalyser;
-import pw.aria.analysis.util.DescHelper;
 
 import java.util.ArrayList;
 import java.util.Iterator;

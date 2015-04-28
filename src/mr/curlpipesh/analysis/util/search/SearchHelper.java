@@ -1,9 +1,9 @@
-package pw.aria.analysis.util.search;
+package mr.curlpipesh.analysis.util.search;
 
-import pw.aria.analysis.Main;
-import pw.aria.analysis.descs.FieldDesc;
-import pw.aria.analysis.descs.MethodDesc;
-import pw.aria.analysis.impl.BetterClassAnalyser;
+import mr.curlpipesh.analysis.Main;
+import mr.curlpipesh.analysis.descs.FieldDesc;
+import mr.curlpipesh.analysis.descs.MethodDesc;
+import mr.curlpipesh.analysis.impl.BetterClassAnalyser;
 
 import java.util.ArrayList;
 import java.util.List;

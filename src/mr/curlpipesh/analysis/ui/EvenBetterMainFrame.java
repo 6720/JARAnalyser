@@ -1,8 +1,8 @@
-package pw.aria.analysis.ui;
+package mr.curlpipesh.analysis.ui;
 
+import mr.curlpipesh.analysis.Main;
+import mr.curlpipesh.analysis.impl.BetterClassAnalyser;
 import org.apache.commons.io.FileUtils;
-import pw.aria.analysis.Main;
-import pw.aria.analysis.impl.BetterClassAnalyser;
 
 import javax.swing.*;
 import javax.swing.tree.TreeSelectionModel;

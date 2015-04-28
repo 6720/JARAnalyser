@@ -1,14 +1,14 @@
-package pw.aria.analysis.util;
+package mr.curlpipesh.analysis.util;
 
+import mr.curlpipesh.analysis.descs.FieldDesc;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.*;
 import org.objectweb.asm.util.Printer;
 import org.objectweb.asm.util.Textifier;
 import org.objectweb.asm.util.TraceMethodVisitor;
-import pw.aria.analysis.descs.ClassDesc;
-import pw.aria.analysis.descs.FieldDesc;
-import pw.aria.analysis.descs.MethodDesc;
-import pw.aria.analysis.impl.BetterClassAnalyser;
+import mr.curlpipesh.analysis.descs.ClassDesc;
+import mr.curlpipesh.analysis.descs.MethodDesc;
+import mr.curlpipesh.analysis.impl.BetterClassAnalyser;
 import sun.reflect.generics.parser.SignatureParser;
 import sun.reflect.generics.tree.ClassSignature;
 
@@ -463,7 +463,7 @@ public class DescHelper {
     }
 
     /**
-     * Creates a more "readable" form of the {@link pw.aria.analysis.descs.ClassDesc}
+     * Creates a more "readable" form of the {@link mr.curlpipesh.analysis.descs.ClassDesc}
      * given. Used in the "bytecode viewing" pane of the GUI.
      */
     public static String classToString(ClassDesc c) {
@@ -556,7 +556,7 @@ public class DescHelper {
     }
 
     /**
-     * Creates a more "readable" form of the {@link pw.aria.analysis.descs.FieldDesc}
+     * Creates a more "readable" form of the {@link mr.curlpipesh.analysis.descs.FieldDesc}
      * given. Used in the "bytecode viewing" pane of the GUI.
      */
     public static String fieldToString(FieldDesc f) {
@@ -651,7 +651,7 @@ public class DescHelper {
     }
 
     /**
-     * Creates a more "readable" form of the {@link pw.aria.analysis.descs.MethodDesc}
+     * Creates a more "readable" form of the {@link mr.curlpipesh.analysis.descs.MethodDesc}
      * given. Used in the "bytecode viewing" pane of the GUI.
      */
     public static String methodToString(MethodDesc m) {
