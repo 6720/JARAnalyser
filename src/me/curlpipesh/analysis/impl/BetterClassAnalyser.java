@@ -1,8 +1,8 @@
-package mr.curlpipesh.analysis.impl;
+package me.curlpipesh.analysis.impl;
 
 import lombok.Data;
-import mr.curlpipesh.analysis.descs.*;
-import mr.curlpipesh.analysis.util.DescHelper;
+import me.curlpipesh.analysis.descs.*;
+import me.curlpipesh.analysis.util.DescHelper;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.*;
 
@@ -23,32 +23,32 @@ public class BetterClassAnalyser {
     private ClassNode cn;
 
     /**
-     * {@link mr.curlpipesh.analysis.descs.ClassDesc} of the class being analysed
+     * {@link me.curlpipesh.analysis.descs.ClassDesc} of the class being analysed
      */
     private ClassDesc classDesc;
 
     /**
-     * {@link mr.curlpipesh.analysis.descs.MethodDesc}s for the class being analysed
+     * {@link me.curlpipesh.analysis.descs.MethodDesc}s for the class being analysed
      */
     private final List<MethodDesc> methods = new ArrayList<>();
 
     /**
-     * {@link mr.curlpipesh.analysis.descs.FieldDesc}s for the class being analysed
+     * {@link me.curlpipesh.analysis.descs.FieldDesc}s for the class being analysed
      */
     private final List<FieldDesc> fields = new ArrayList<>();
 
     /**
-     * {@link mr.curlpipesh.analysis.descs.AnnotationDesc}s for the class being analysed
+     * {@link me.curlpipesh.analysis.descs.AnnotationDesc}s for the class being analysed
      */
     private final List<AnnotationDesc> annotations = new ArrayList<>();
 
     /**
-     * {@link mr.curlpipesh.analysis.descs.TypeAnnotationDesc}s for the class being analysed
+     * {@link me.curlpipesh.analysis.descs.TypeAnnotationDesc}s for the class being analysed
      */
     private final List<TypeAnnotationDesc> typeAnnotations = new ArrayList<>();
 
     /**
-     * {@link mr.curlpipesh.analysis.descs.InnerClassDesc}s for the class being analysed
+     * {@link me.curlpipesh.analysis.descs.InnerClassDesc}s for the class being analysed
      */
     private final List<InnerClassDesc> innerClasses = new ArrayList<>();
 

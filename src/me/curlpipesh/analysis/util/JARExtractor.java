@@ -1,6 +1,6 @@
-package mr.curlpipesh.analysis.util;
+package me.curlpipesh.analysis.util;
 
-import mr.curlpipesh.analysis.Main;
+import me.curlpipesh.analysis.Main;
 
 import java.io.File;
 import java.io.FileOutputStream;

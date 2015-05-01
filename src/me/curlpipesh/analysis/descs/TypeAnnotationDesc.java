@@ -1,4 +1,4 @@
-package mr.curlpipesh.analysis.descs;
+package me.curlpipesh.analysis.descs;
 
 import lombok.Data;
 import org.objectweb.asm.TypePath;

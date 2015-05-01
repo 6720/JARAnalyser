@@ -1,7 +1,7 @@
-package mr.curlpipesh.analysis.descs;
+package me.curlpipesh.analysis.descs;
 
 import lombok.Data;
-import mr.curlpipesh.analysis.util.DescHelper;
+import me.curlpipesh.analysis.util.DescHelper;
 import org.objectweb.asm.tree.ClassNode;
 
 /**

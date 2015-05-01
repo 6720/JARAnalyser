@@ -1,13 +1,13 @@
-package mr.curlpipesh.analysis.descs;
+package me.curlpipesh.analysis.descs;
 
 import lombok.Data;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.FieldNode;
-import mr.curlpipesh.analysis.Main;
-import mr.curlpipesh.analysis.impl.BetterClassAnalyser;
-import mr.curlpipesh.analysis.util.DescHelper;
+import me.curlpipesh.analysis.Main;
+import me.curlpipesh.analysis.impl.BetterClassAnalyser;
+import me.curlpipesh.analysis.util.DescHelper;
 
 import java.util.ArrayList;
 import java.util.Iterator;

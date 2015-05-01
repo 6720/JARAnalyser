@@ -1,9 +1,9 @@
-package mr.curlpipesh.analysis.util.search;
+package me.curlpipesh.analysis.util.search;
 
-import mr.curlpipesh.analysis.Main;
-import mr.curlpipesh.analysis.descs.FieldDesc;
-import mr.curlpipesh.analysis.descs.MethodDesc;
-import mr.curlpipesh.analysis.impl.BetterClassAnalyser;
+import me.curlpipesh.analysis.Main;
+import me.curlpipesh.analysis.descs.FieldDesc;
+import me.curlpipesh.analysis.descs.MethodDesc;
+import me.curlpipesh.analysis.impl.BetterClassAnalyser;
 
 import java.util.ArrayList;
 import java.util.List;

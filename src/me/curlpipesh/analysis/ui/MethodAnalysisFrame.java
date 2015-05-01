@@ -1,6 +1,6 @@
-package mr.curlpipesh.analysis.ui;
+package me.curlpipesh.analysis.ui;
 
-import mr.curlpipesh.analysis.impl.BetterClassAnalyser;
+import me.curlpipesh.analysis.impl.BetterClassAnalyser;
 
 import javax.swing.*;
 import java.awt.*;

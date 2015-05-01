@@ -1,6 +1,6 @@
-package mr.curlpipesh.analysis.ui;
+package me.curlpipesh.analysis.ui;
 
-import mr.curlpipesh.analysis.Main;
+import me.curlpipesh.analysis.Main;
 
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;

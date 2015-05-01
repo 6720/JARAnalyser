@@ -1,14 +1,14 @@
-package mr.curlpipesh.analysis;
+package me.curlpipesh.analysis;
 
 import lombok.Getter;
-import mr.curlpipesh.analysis.descs.FieldDesc;
+import me.curlpipesh.analysis.descs.FieldDesc;
+import me.curlpipesh.analysis.descs.MethodDesc;
+import me.curlpipesh.analysis.ui.LoadingFrame;
+import me.curlpipesh.analysis.util.JARExtractor;
 import org.apache.commons.io.FileUtils;
 import org.objectweb.asm.ClassReader;
-import mr.curlpipesh.analysis.descs.MethodDesc;
-import mr.curlpipesh.analysis.impl.BetterClassAnalyser;
-import mr.curlpipesh.analysis.ui.EvenBetterMainFrame;
-import mr.curlpipesh.analysis.ui.LoadingFrame;
-import mr.curlpipesh.analysis.util.JARExtractor;
+import me.curlpipesh.analysis.impl.BetterClassAnalyser;
+import me.curlpipesh.analysis.ui.EvenBetterMainFrame;
 
 import javax.swing.*;
 import java.awt.*;

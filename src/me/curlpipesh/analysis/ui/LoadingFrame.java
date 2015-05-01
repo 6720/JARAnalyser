@@ -1,4 +1,4 @@
-package mr.curlpipesh.analysis.ui;
+package me.curlpipesh.analysis.ui;
 
 import javax.swing.*;
 import java.awt.*;

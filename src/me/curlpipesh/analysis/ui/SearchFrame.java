@@ -1,6 +1,6 @@
-package mr.curlpipesh.analysis.ui;
+package me.curlpipesh.analysis.ui;
 
-import mr.curlpipesh.analysis.util.search.SearchHelper;
+import me.curlpipesh.analysis.util.search.SearchHelper;
 
 import javax.swing.*;
 import java.awt.*;
