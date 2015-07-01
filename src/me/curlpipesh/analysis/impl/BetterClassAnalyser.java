@@ -159,7 +159,7 @@ public class BetterClassAnalyser {
             for(String s : f.getFieldAccessLocations()) {
                 sb.append("   - ").append(s).append("\n");
             }
-            sb.append("\n");
+            //sb.append("\n");
         }
         return sb.toString();
     }
@@ -183,7 +183,7 @@ public class BetterClassAnalyser {
             for(String s : m.getMethodCallLocations()) {
                 sb.append("   - ").append(s).append("\n");
             }
-            sb.append("\n");
+            //sb.append("\n");
         }
         return sb.toString();
     }

@@ -366,6 +366,40 @@ public class DescHelper {
     }
 
     /**
+     * Returns a String representation of a given class access level
+     * @param access The access level
+     * @return A String representatino of a given class access level
+     */
+    public static String classAccessLevelToString(int access) {
+        StringBuilder sb = new StringBuilder();
+        if(isPublic(access)) {
+            sb.append("public ");
+        } else if(isProtected(access)) {
+            sb.append("protected ");
+        } else if(isPrivate(access)) {
+            sb.append("private ");
+        }
+        if(isStatic(access)) {
+            sb.append("static ");
+        }
+        if(isFinal(access)) {
+            sb.append("final ");
+        } else if(isAbstract(access)) {
+            sb.append("abstract ");
+        }
+        if(isAnnotation(access)) {
+            sb.append("@interface ");
+        } else if(isInterface(access)) {
+            sb.append("interface ");
+        } else if(isEnum(access)) {
+            sb.append("enum ");
+        } else {
+            sb.append("class ");
+        }
+        return sb.toString().trim();
+    }
+
+    /**
      * Creates a <tt>String[]</tt> out of the annotations on a given MethodNode
      * Ex: {"@EventHandler", "@RuntimePriority(Priotity.HIGH)"}
      *
@@ -487,32 +521,7 @@ public class DescHelper {
             }
             sb.append(e).append("\n");
         }
-        if(isPublic(c.getAccessLevel())) {
-            sb.append("public ");
-        } else if(isProtected(c.getAccessLevel())) {
-            sb.append("protected ");
-        } else if(isPrivate(c.getAccessLevel())) {
-            sb.append("private ");
-        }
-        if(isStatic(c.getAccessLevel())) {
-            sb.append("static ");
-        }
-        if(isFinal(c.getAccessLevel())) {
-            sb.append("final ");
-        } else if(isAbstract(c.getAccessLevel())) {
-            sb.append("abstract ");
-        }
-        if(isAnnotation(c.getAccessLevel())) {
-            sb.append("@interface ");
-        } else if(isInterface(c.getAccessLevel())) {
-            sb.append("interface ");
-        } else if(isEnum(c.getAccessLevel())) {
-            sb.append("enum ");
-        } else {
-            sb.append("class ");
-        }
-
-        sb.append(className);
+        sb.append(classAccessLevelToString(c.getAccessLevel())).append(className);
 
         if(!isEnum(c.getAccessLevel()) && !isAnnotation(c.getAccessLevel())) {
             if (c.getClassSignature() != null) {

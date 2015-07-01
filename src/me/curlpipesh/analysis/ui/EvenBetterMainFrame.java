@@ -1,15 +1,16 @@
 package me.curlpipesh.analysis.ui;
 
 import me.curlpipesh.analysis.Main;
+import me.curlpipesh.analysis.descs.ClassDesc;
 import me.curlpipesh.analysis.impl.BetterClassAnalyser;
+import me.curlpipesh.analysis.util.DescHelper;
 import org.apache.commons.io.FileUtils;
 
 import javax.swing.*;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.Map;
 import java.util.Optional;
 import java.util.jar.JarEntry;
@@ -19,6 +20,7 @@ import java.util.logging.Logger;
 @SuppressWarnings("FieldCanBeLocal")
 public class EvenBetterMainFrame extends JFrame {
     private JButton jButton1;
+    private JButton jButton2;
     private JScrollPane jScrollPane4;
     private JScrollPane jScrollPane6;
     private JSplitPane jSplitPane3;
@@ -63,6 +65,7 @@ public class EvenBetterMainFrame extends JFrame {
         searchFrame = new SearchFrame();
         jToolBar1 = new JToolBar();
         jButton1 = new JButton();
+        jButton2 = new JButton();
         jSplitPane3 = new JSplitPane();
         jTabbedPane1 = new JTabbedPane();
         jScrollPane6 = new JScrollPane();
@@ -165,6 +168,65 @@ public class EvenBetterMainFrame extends JFrame {
         });
 
         jToolBar1.add(jButton1);
+
+        jButton2.setText("Dump to stdout");
+        jButton2.setFocusable(false);
+        jButton2.setHorizontalTextPosition(SwingConstants.CENTER);
+        jButton2.setVerticalTextPosition(SwingConstants.BOTTOM);
+
+        jButton2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                if(mouseEvent.getButton() == MouseEvent.BUTTON1) {
+                    File text = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().getPath() + File.separator + "dump.txt");
+                    if(text.exists()) {
+                        if(!text.delete()) {
+                            throw new RuntimeException("Unable to delete dump file!");
+                        }
+                    }
+                    try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(text, false)))) {
+                        out.println("");
+                    }catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    for(Map.Entry<JarEntry, BetterClassAnalyser> entry : Main.getAnalysers().entrySet()) {
+                        BetterClassAnalyser analyser = entry.getValue();
+                        StringBuilder sb = new StringBuilder();
+
+                        // Class
+                        ClassDesc cd = analyser.getClassDesc();
+                        sb.append("Dump of: ").append(cd.getClassName()).append("\nExtending: ")
+                                .append(cd.getSuperClassName()).append("\n");
+                        if(cd.getInterfaceNames().length > 0) {
+                            sb.append("Implementing:\n");
+                            for(String iface : cd.getInterfaceNames()) {
+                                sb.append(" * ").append(iface).append("\n");
+                            }
+                        }
+                        sb.append("Access level: ").append(DescHelper.classAccessLevelToString(cd.getAccessLevel()))
+                        .append("\n");
+                        // Fields
+                        if(analyser.getFields().size() > 0) {
+                            sb.append(analyser.getFieldAnalysis()).append("\n");
+                        }
+                        // Methods
+                        if(analyser.getMethods().size() > 0) {
+                            sb.append(analyser.getMethodAnalysis()).append("\n");
+                        }
+                        sb.append("================================================================================\n");
+                        //System.out.println(sb.toString());
+                        try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(text, true)))) {
+                            out.println(sb.toString());
+                        }catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println("done");
+                    }
+                }
+            }
+        });
+
+        jToolBar1.add(jButton2);
 
         jTextArea2.setColumns(20);
         jTextArea2.setRows(5);
