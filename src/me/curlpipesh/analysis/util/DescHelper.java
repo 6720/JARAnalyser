@@ -396,7 +396,7 @@ public class DescHelper {
         } else {
             sb.append("class ");
         }
-        return sb.toString().trim();
+        return sb.toString();
     }
 
     /**
